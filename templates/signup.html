@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up - Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .signup-container {
+            display: flex;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .signup-form {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .signup-form h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .signup-form input, .signup-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .signup-form input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .signup-form input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        .signup-form p {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .signup-form a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .signup-form a:hover {
+            text-decoration: underline;
+        }
+
+        .signup-image {
+            flex: 1;
+            background: url('{{ url_for("static", filename="images/signup-banner.jpg") }}') center/cover no-repeat;
+            min-height: 500px;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .signup-container {
+                flex-direction: column;
+            }
+
+            .signup-image {
+                min-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="signup-container">
+    <div class="signup-form">
+        <h2>Create a New Account</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            <input type="text" name="fullname" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="text" name="mobile" placeholder="Mobile Number" required>
+            <input type="number" name="age" placeholder="Age" required>
+            <textarea name="address" placeholder="Address" rows="3" required></textarea>
+            <input type="submit" value="Sign Up">
+        </form>
+
+        <p>Already have an account? <a href="/login">Login here</a></p>
+    </div>
+
+    <div class="signup-image"></div>
+</div>
+
+</body>
+</html>

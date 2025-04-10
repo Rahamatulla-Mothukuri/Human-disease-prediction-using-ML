@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Disease Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Disease Predictor Dashboard</h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="welcome-section">
+            <h2>Welcome to Dashboard</h2>
+            <p>You have successfully logged in.</p>
+        </div>
+
+        <div class="actions">
+            <a href="#" class="nav-link"><i class="fas fa-stethoscope"></i> Predict Disease</a> |
+            <a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+
+        <div class="button-container">
+            <button id="symptomButton" class="action-button">Select Symptoms</button>
+        </div>
+
+        <div id="symptomsSection" class="symptoms-container" style="display: none;">
+            <h3>Select Your Symptoms</h3>
+            <form method="POST" action="/predict">
+                <div class="symptom-categories">
+                    <div class="category">
+                        <h4>Skin Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="itching"> Itching <span class="info-icon" data-symptom="itching"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="skin_rash"> Skin Rash <span class="info-icon" data-symptom="skin_rash"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="nodal_skin_eruptions"> Nodal Skin Eruptions <span class="info-icon" data-symptom="nodal_skin_eruptions"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="dischromic_patches"> Dischromic Patches <span class="info-icon" data-symptom="dischromic_patches"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="red_spots_over_body"> Red Spots Over Body <span class="info-icon" data-symptom="red_spots_over_body"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="pus_filled_pimples"> Pus-Filled Pimples <span class="info-icon" data-symptom="pus_filled_pimples"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="blackheads"> Blackheads <span class="info-icon" data-symptom="blackheads"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="scurring"> Scurring <span class="info-icon" data-symptom="scurring"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="skin_peeling"> Skin Peeling <span class="info-icon" data-symptom="skin_peeling"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="silver_like_dusting"> Silver-Like Dusting <span class="info-icon" data-symptom="silver_like_dusting"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="small_dents_in_nails"> Small Dents in Nails <span class="info-icon" data-symptom="small_dents_in_nails"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="inflammatory_nails"> Inflammatory Nails <span class="info-icon" data-symptom="inflammatory_nails"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="blister"> Blister <span class="info-icon" data-symptom="blister"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="red_sore_around_nose"> Red Sore Around Nose <span class="info-icon" data-symptom="red_sore_around_nose"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="yellow_crust_ooze"> Yellow Crust Ooze <span class="info-icon" data-symptom="yellow_crust_ooze"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Respiratory Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="continuous_sneezing"> Continuous Sneezing <span class="info-icon" data-symptom="continuous_sneezing"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="shivering"> Shivering <span class="info-icon" data-symptom="shivering"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="chills"> Chills <span class="info-icon" data-symptom="chills"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="cough"> Cough <span class="info-icon" data-symptom="cough"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="breathlessness"> Breathlessness <span class="info-icon" data-symptom="breathlessness"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="phlegm"> Phlegm <span class="info-icon" data-symptom="phlegm"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="throat_irritation"> Throat Irritation <span class="info-icon" data-symptom="throat_irritation"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="redness_of_eyes"> Redness of Eyes <span class="info-icon" data-symptom="redness_of_eyes"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="sinus_pressure"> Sinus Pressure <span class="info-icon" data-symptom="sinus_pressure"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="runny_nose"> Runny Nose <span class="info-icon" data-symptom="runny_nose"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="congestion"> Congestion <span class="info-icon" data-symptom="congestion"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="chest_pain"> Chest Pain <span class="info-icon" data-symptom="chest_pain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="blood_in_sputum"> Blood in Sputum <span class="info-icon" data-symptom="blood_in_sputum"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Gastrointestinal Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="stomach_pain"> Stomach Pain <span class="info-icon" data-symptom="stomach_pain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="acidity"> Acidity <span class="info-icon" data-symptom="acidity"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="ulcers_on_tongue"> Ulcers on Tongue <span class="info-icon" data-symptom="ulcers_on_tongue"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="vomiting"> Vomiting <span class="info-icon" data-symptom="vomiting"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="nausea"> Nausea <span class="info-icon" data-symptom="nausea"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="loss_of_appetite"> Loss of Appetite <span class="info-icon" data-symptom="loss_of_appetite"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="pain_during_bowel_movements"> Pain During Bowel Movements <span class="info-icon" data-symptom="pain_during_bowel_movements"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="pain_in_anal_region"> Pain in Anal Region <span class="info-icon" data-symptom="pain_in_anal_region"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="bloody_stool"> Bloody Stool <span class="info-icon" data-symptom="bloody_stool"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="irritation_in_anus"> Irritation in Anus <span class="info-icon" data-symptom="irritation_in_anus"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="constipation"> Constipation <span class="info-icon" data-symptom="constipation"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="abdominal_pain"> Abdominal Pain <span class="info-icon" data-symptom="abdominal_pain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="diarrhoea"> Diarrhoea <span class="info-icon" data-symptom="diarrhoea"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="indigestion"> Indigestion <span class="info-icon" data-symptom="indigestion"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="passage_of_gases"> Passage of Gases <span class="info-icon" data-symptom="passage_of_gases"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="stomach_bleeding"> Stomach Bleeding <span class="info-icon" data-symptom="stomach_bleeding"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="distention_of_abdomen"> Distention of Abdomen <span class="info-icon" data-symptom="distention_of_abdomen"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="swelling_of_stomach"> Swelling of Stomach <span class="info-icon" data-symptom="swelling_of_stomach"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Musculoskeletal Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="joint_pain"> Joint Pain <span class="info-icon" data-symptom="joint_pain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="muscle_wasting"> Muscle Wasting <span class="info-icon" data-symptom="muscle_wasting"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="muscle_weakness"> Muscle Weakness <span class="info-icon" data-symptom="muscle_weakness"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="muscle_pain"> Muscle Pain <span class="info-icon" data-symptom="muscle_pain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="knee_pain"> Knee Pain <span class="info-icon" data-symptom="knee_pain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="hip_joint_pain"> Hip Joint Pain <span class="info-icon" data-symptom="hip_joint_pain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="stiff_neck"> Stiff Neck <span class="info-icon" data-symptom="stiff_neck"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="swelling_joints"> Swelling Joints <span class="info-icon" data-symptom="swelling_joints"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="movement_stiffness"> Movement Stiffness <span class="info-icon" data-symptom="movement_stiffness"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="painful_walking"> Painful Walking <span class="info-icon" data-symptom="painful_walking"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="back_pain"> Back Pain <span class="info-icon" data-symptom="back_pain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="neck_pain"> Neck Pain <span class="info-icon" data-symptom="neck_pain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="cramps"> Cramps <span class="info-icon" data-symptom="cramps"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Neurological Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="headache"> Headache <span class="info-icon" data-symptom="headache"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="dizziness"> Dizziness <span class="info-icon" data-symptom="dizziness"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="spinning_movements"> Spinning Movements (Vertigo) <span class="info-icon" data-symptom="spinning_movements"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="loss_of_balance"> Loss of Balance <span class="info-icon" data-symptom="loss_of_balance"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="unsteadiness"> Unsteadiness <span class="info-icon" data-symptom="unsteadiness"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="weakness_of_one_body_side"> Weakness of One Body Side <span class="info-icon" data-symptom="weakness_of_one_body_side"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="loss_of_smell"> Loss of Smell <span class="info-icon" data-symptom="loss_of_smell"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="altered_sensorium"> Altered Sensorium <span class="info-icon" data-symptom="altered_sensorium"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="lack_of_concentration"> Lack of Concentration <span class="info-icon" data-symptom="lack_of_concentration"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="visual_disturbances"> Visual Disturbances <span class="info-icon" data-symptom="visual_disturbances"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="blurred_and_distorted_vision"> Blurred and Distorted Vision <span class="info-icon" data-symptom="blurred_and_distorted_vision"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="slurred_speech"> Slurred Speech <span class="info-icon" data-symptom="slurred_speech"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>General/Systemic Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="fatigue"> Fatigue <span class="info-icon" data-symptom="fatigue"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="weight_gain"> Weight Gain <span class="info-icon" data-symptom="weight_gain"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="weight_loss"> Weight Loss <span class="info-icon" data-symptom="weight_loss"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="restlessness"> Restlessness <span class="info-icon" data-symptom="restlessness"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="lethargy"> Lethargy <span class="info-icon" data-symptom="lethargy"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="high_fever"> High Fever <span class="info-icon" data-symptom="high_fever"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="sweating"> Sweating <span class="info-icon" data-symptom="sweating"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="dehydration"> Dehydration <span class="info-icon" data-symptom="dehydration"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="malaise"> Malaise <span class="info-icon" data-symptom="malaise"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="weakness_in_limbs"> Weakness in Limbs <span class="info-icon" data-symptom="weakness_in_limbs"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="bruising"> Bruising <span class="info-icon" data-symptom="bruising"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="obesity"> Obesity <span class="info-icon" data-symptom="obesity"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="swollen_legs"> Swollen Legs <span class="info-icon" data-symptom="swollen_legs"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="swollen_blood_vessels"> Swollen Blood Vessels <span class="info-icon" data-symptom="swollen_blood_vessels"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="swollen_extremities"> Swollen Extremities <span class="info-icon" data-symptom="swollen_extremities"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="depression"> Depression <span class="info-icon" data-symptom="depression"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="irritability"> Irritability <span class="info-icon" data-symptom="irritability"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="family_history"> Family History <span class="info-icon" data-symptom="family_history"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="history_of_alcohol_consumption"> History of Alcohol Consumption <span class="info-icon" data-symptom="history_of_alcohol_consumption"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Cardiovascular Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="fast_heart_rate"> Fast Heart Rate <span class="info-icon" data-symptom="fast_heart_rate"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="palpitations"> Palpitations <span class="info-icon" data-symptom="palpitations"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="prominent_veins_on_calf"> Prominent Veins on Calf <span class="info-icon" data-symptom="prominent_veins_on_calf"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="sunken_eyes"> Sunken Eyes <span class="info-icon" data-symptom="sunken_eyes"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Urinary Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="burning_micturition"> Burning Micturition <span class="info-icon" data-symptom="burning_micturition"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="spotting_urination"> Spotting Urination <span class="info-icon" data-symptom="spotting_urination"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="yellow_urine"> Yellow Urine <span class="info-icon" data-symptom="yellow_urine"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="bladder_discomfort"> Bladder Discomfort <span class="info-icon" data-symptom="bladder_discomfort"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="foul_smell_of_urine"> Foul Smell of Urine <span class="info-icon" data-symptom="foul_smell_of_urine"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="continuous_feel_of_urine"> Continuous Feel of Urine <span class="info-icon" data-symptom="continuous_feel_of_urine"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="polyuria"> Polyuria <span class="info-icon" data-symptom="polyuria"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Hepatic Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="yellowish_skin"> Yellowish Skin <span class="info-icon" data-symptom="yellowish_skin"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="dark_urine"> Dark Urine <span class="info-icon" data-symptom="dark_urine"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="yellowing_of_eyes"> Yellowing of Eyes <span class="info-icon" data-symptom="yellowing_of_eyes"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="acute_liver_failure"> Acute Liver Failure <span class="info-icon" data-symptom="acute_liver_failure"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="fluid_overload"> Fluid Overload <span class="info-icon" data-symptom="fluid_overload"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Endocrine/Metabolic Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="anxiety"> Anxiety <span class="info-icon" data-symptom="anxiety"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="cold_hands_and_feets"> Cold Hands and Feet <span class="info-icon" data-symptom="cold_hands_and_feets"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="mood_swings"> Mood Swings <span class="info-icon" data-symptom="mood_swings"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="irregular_sugar_level"> Irregular Sugar Level <span class="info-icon" data-symptom="irregular_sugar_level"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="excessive_hunger"> Excessive Hunger <span class="info-icon" data-symptom="excessive_hunger"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="increased_appetite"> Increased Appetite <span class="info-icon" data-symptom="increased_appetite"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="puffy_face_and_eyes"> Puffy Face and Eyes <span class="info-icon" data-symptom="puffy_face_and_eyes"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="enlarged_thyroid"> Enlarged Thyroid <span class="info-icon" data-symptom="enlarged_thyroid"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="brittle_nails"> Brittle Nails <span class="info-icon" data-symptom="brittle_nails"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="drying_and_tingling_lips"> Drying and Tingling Lips <span class="info-icon" data-symptom="drying_and_tingling_lips"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Ophthalmic Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="pain_behind_the_eyes"> Pain Behind the Eyes <span class="info-icon" data-symptom="pain_behind_the_eyes"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="watering_from_eyes"> Watering from Eyes <span class="info-icon" data-symptom="watering_from_eyes"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Lymphatic/Immune Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="swelled_lymph_nodes"> Swelled Lymph Nodes <span class="info-icon" data-symptom="swelled_lymph_nodes"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="receiving_blood_transfusion"> Receiving Blood Transfusion <span class="info-icon" data-symptom="receiving_blood_transfusion"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="receiving_unsterile_injections"> Receiving Unsterile Injections <span class="info-icon" data-symptom="receiving_unsterile_injections"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+
+                    <div class="category">
+                        <h4>Other Symptoms</h4>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="extra_marital_contacts"> Extra Marital Contacts <span class="info-icon" data-symptom="extra_marital_contacts"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="abnormal_menstruation"> Abnormal Menstruation <span class="info-icon" data-symptom="abnormal_menstruation"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="toxic_look_(typhos)"> Toxic Look (Typhos) <span class="info-icon" data-symptom="toxic_look_(typhos)"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="internal_itching"> Internal Itching <span class="info-icon" data-symptom="internal_itching"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="mucoid_sputum"> Mucoid Sputum <span class="info-icon" data-symptom="mucoid_sputum"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="rusty_sputum"> Rusty Sputum <span class="info-icon" data-symptom="rusty_sputum"><i class="fas fa-info-circle"></i></span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="coma"> Coma <span class="info-icon" data-symptom="coma"><i class="fas fa-info-circle"></i></span></label><br>
+                    </div>
+                </div>
+
+                <div class="text-symptom-input">
+                    <h4>Can’t Find a Symptom?</h4>
+                    <p>Describe it here:</p>
+                    <textarea name="custom_symptom" rows="3" placeholder="e.g., I feel a sharp pain in my lower back"></textarea>
+                    <button type="button" id="suggestButton" class="action-button">Suggest Symptoms</button>
+                    <div id="suggestedSymptoms" class="suggested-symptoms"></div>
+                </div>
+
+                <button type="submit" class="submit-button">Submit Symptoms</button>
+            </form>
+            <div id="symptomPopup" class="symptom-popup"></div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const symptomButton = document.getElementById('symptomButton');
+            const symptomsSection = document.getElementById('symptomsSection');
+            const suggestButton = document.getElementById('suggestButton');
+            const suggestedSymptomsDiv = document.getElementById('suggestedSymptoms');
+            const symptomPopup = document.getElementById('symptomPopup');
+            const infoIcons = document.querySelectorAll('.info-icon');
+
+            // Toggle symptoms section
+            symptomButton.addEventListener('click', () => {
+                symptomsSection.style.display = symptomsSection.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Symptom descriptions for info icons
+            const symptomDescriptions = {
+                "itching": "A sensation that causes the desire to scratch the skin.",
+                "skin_rash": "Red, inflamed, or irritated patches on the skin.",
+                "nodal_skin_eruptions": "Small, raised bumps or nodules on the skin.",
+                "dischromic_patches": "Areas of skin with abnormal color changes.",
+                "red_spots_over_body": "Small red dots appearing across the body.",
+                "pus_filled_pimples": "Pimples containing pus, often painful.",
+                "blackheads": "Small dark spots on the skin due to clogged pores.",
+                "scurring": "Formation of scabs or crusts on the skin.",
+                "skin_peeling": "Shedding of the outer layer of skin.",
+                "silver_like_dusting": "Shiny, silvery scales on the skin.",
+                "small_dents_in_nails": "Tiny pits or depressions in the fingernails.",
+                "inflammatory_nails": "Red, swollen, or painful areas around the nails.",
+                "blister": "A fluid-filled bubble on the skin.",
+                "red_sore_around_nose": "Painful red area near the nostrils.",
+                "yellow_crust_ooze": "Yellowish discharge forming crusts on the skin.",
+                "continuous_sneezing": "Repeated sneezing without stopping.",
+                "shivering": "Uncontrollable trembling, often due to cold or fever.",
+                "chills": "A feeling of coldness with shivering.",
+                "cough": "A sudden expulsion of air from the lungs.",
+                "breathlessness": "Difficulty breathing or shortness of breath.",
+                "phlegm": "Thick mucus coughed up from the respiratory tract.",
+                "throat_irritation": "Scratchy or sore feeling in the throat.",
+                "redness_of_eyes": "Bloodshot or red appearance of the eyes.",
+                "sinus_pressure": "Pain or pressure around the sinuses.",
+                "runny_nose": "Excessive nasal discharge.",
+                "congestion": "Blocked nasal passages or chest.",
+                "chest_pain": "Discomfort or pain in the chest area.",
+                "blood_in_sputum": "Blood present in coughed-up mucus.",
+                "stomach_pain": "Pain or discomfort in the stomach.",
+                "acidity": "Burning sensation in the chest or stomach from acid reflux.",
+                "ulcers_on_tongue": "Painful sores on the tongue.",
+                "vomiting": "Expelling stomach contents through the mouth.",
+                "nausea": "A feeling of sickness with an urge to vomit.",
+                "loss_of_appetite": "Reduced desire to eat.",
+                "pain_during_bowel_movements": "Discomfort during defecation.",
+                "pain_in_anal_region": "Pain around the anus.",
+                "bloody_stool": "Blood present in the stool.",
+                "irritation_in_anus": "Itching or discomfort around the anus.",
+                "constipation": "Difficulty or infrequent bowel movements.",
+                "abdominal_pain": "Pain in the belly area.",
+                "diarrhoea": "Frequent, loose, or watery stools.",
+                "indigestion": "Discomfort or pain from poor digestion.",
+                "passage_of_gases": "Excessive flatulence or gas.",
+                "stomach_bleeding": "Internal bleeding in the stomach.",
+                "distention_of_abdomen": "Swollen or bloated belly.",
+                "swelling_of_stomach": "Enlargement of the stomach area.",
+                "joint_pain": "Pain in the joints (e.g., knees, elbows).",
+                "muscle_wasting": "Loss of muscle mass or strength.",
+                "muscle_weakness": "Reduced muscle strength.",
+                "muscle_pain": "Aching or soreness in the muscles.",
+                "knee_pain": "Pain specifically in the knee joint.",
+                "hip_joint_pain": "Pain in the hip area.",
+                "stiff_neck": "Difficulty moving the neck due to stiffness.",
+                "swelling_joints": "Swollen or inflamed joints.",
+                "movement_stiffness": "Restricted or painful movement.",
+                "painful_walking": "Discomfort while walking.",
+                "back_pain": "Pain in the back, often lower back.",
+                "neck_pain": "Pain or discomfort in the neck.",
+                "cramps": "Sudden, painful muscle contractions.",
+                "headache": "Pain in the head or upper neck.",
+                "dizziness": "A sensation of spinning or lightheadedness.",
+                "spinning_movements": "Feeling the surroundings are spinning (vertigo).",
+                "loss_of_balance": "Difficulty maintaining stability.",
+                "unsteadiness": "Feeling shaky or unstable.",
+                "weakness_of_one_body_side": "Weakness on one side of the body.",
+                "loss_of_smell": "Inability to smell odors.",
+                "altered_sensorium": "Changes in consciousness or awareness.",
+                "lack_of_concentration": "Difficulty focusing or thinking clearly.",
+                "visual_disturbances": "Abnormalities in vision.",
+                "blurred_and_distorted_vision": "Unclear or warped vision.",
+                "slurred_speech": "Difficulty speaking clearly.",
+                "fatigue": "Extreme tiredness or lack of energy.",
+                "weight_gain": "Unexplained increase in body weight.",
+                "weight_loss": "Unexplained decrease in body weight.",
+                "restlessness": "Inability to relax or stay still.",
+                "lethargy": "A state of sluggishness or apathy.",
+                "high_fever": "Elevated body temperature above normal.",
+                "sweating": "Excessive perspiration.",
+                "dehydration": "Lack of adequate body fluids.",
+                "malaise": "A general feeling of discomfort or illness.",
+                "weakness_in_limbs": "Reduced strength in arms or legs.",
+                "bruising": "Unexplained marks or discoloration on the skin.",
+                "obesity": "Excessive body fat accumulation.",
+                "swollen_legs": "Swelling in the lower limbs.",
+                "swollen_blood_vessels": "Visible, enlarged veins.",
+                "swollen_extremities": "Swelling in hands, feet, or limbs.",
+                "depression": "Persistent sadness or low mood.",
+                "irritability": "Easily annoyed or agitated.",
+                "family_history": "Family members with similar symptoms or diseases.",
+                "history_of_alcohol_consumption": "Past or current heavy alcohol use.",
+                "fast_heart_rate": "Rapid heartbeat or pulse.",
+                "palpitations": "Feeling of irregular or strong heartbeats.",
+                "prominent_veins_on_calf": "Visible veins on the lower leg.",
+                "sunken_eyes": "Eyes appearing deep-set or hollow.",
+                "burning_micturition": "Burning sensation during urination.",
+                "spotting_urination": "Small amounts of blood in urine.",
+                "yellow_urine": "Urine with a strong yellow color.",
+                "bladder_discomfort": "Pain or unease in the bladder area.",
+                "foul_smell_of_urine": "Unpleasant odor in urine.",
+                "continuous_feel_of_urine": "Persistent urge to urinate.",
+                "polyuria": "Excessive urine production.",
+                "yellowish_skin": "Yellow tint to the skin (jaundice).",
+                "dark_urine": "Urine that is dark in color.",
+                "yellowing_of_eyes": "Yellow discoloration of the eyes.",
+                "acute_liver_failure": "Sudden loss of liver function.",
+                "fluid_overload": "Excess fluid buildup in the body.",
+                "anxiety": "Feelings of nervousness or worry.",
+                "cold_hands_and_feets": "Unusually cold hands and feet.",
+                "mood_swings": "Rapid changes in emotional state.",
+                "irregular_sugar_level": "Fluctuating blood sugar levels.",
+                "excessive_hunger": "Unusually strong hunger.",
+                "increased_appetite": "Heightened desire to eat.",
+                "puffy_face_and_eyes": "Swelling around the face and eyes.",
+                "enlarged_thyroid": "Swollen thyroid gland in the neck.",
+                "brittle_nails": "Nails that break easily.",
+                "drying_and_tingling_lips": "Dry, prickling sensation on lips.",
+                "pain_behind_the_eyes": "Pain felt behind the eyeballs.",
+                "watering_from_eyes": "Excessive tearing from the eyes.",
+                "swelled_lymph_nodes": "Enlarged lymph glands.",
+                "receiving_blood_transfusion": "History of blood transfusion.",
+                "receiving_unsterile_injections": "History of unsafe injections.",
+                "extra_marital_contacts": "Sexual activity outside marriage.",
+                "abnormal_menstruation": "Irregular or painful periods.",
+                "toxic_look_(typhos)": "Appearance of severe illness.",
+                "internal_itching": "Itching sensation inside the body.",
+                "mucoid_sputum": "Thick, sticky mucus coughed up.",
+                "rusty_sputum": "Mucus with a rust-like color.",
+                "coma": "State of unconsciousness."
+            };
+
+            // Info icon click handler
+            infoIcons.forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const symptom = icon.getAttribute('data-symptom');
+                    if (symptomDescriptions[symptom]) {
+                        symptomPopup.innerHTML = symptomDescriptions[symptom];
+                        symptomPopup.style.display = 'block';
+                        const rect = icon.getBoundingClientRect();
+                        symptomPopup.style.top = `${rect.top + window.scrollY}px`;
+                        symptomPopup.style.left = `${rect.right + window.scrollX + 10}px`;
+                        setTimeout(() => {
+                            symptomPopup.style.display = 'none';
+                        }, 3000);
+                    }
+                });
+            });
+
+            // Suggest symptoms
+            suggestButton.addEventListener('click', async () => {
+                const customSymptom = document.querySelector('textarea[name="custom_symptom"]').value;
+                if (!customSymptom) return;
+
+                const response = await fetch('/suggest_symptoms', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ description: customSymptom })
+                });
+                const suggestions = await response.json();
+
+                suggestedSymptomsDiv.innerHTML = '';
+                if (suggestions.length > 0) {
+                    suggestions.forEach(s => {
+                        const label = document.createElement('label');
+                        label.className = 'symptom-label';
+                        label.innerHTML = `<input type="checkbox" name="symptoms" value="${s}"> ${s.replace(/_/g, ' ')} <span class="info-icon" data-symptom="${s}"><i class="fas fa-info-circle"></i></span>`;
+                        suggestedSymptomsDiv.appendChild(label);
+                    });
+                    suggestedSymptomsDiv.style.display = 'block';
+
+                    // Attach listeners to new info icons
+                    const newInfoIcons = suggestedSymptomsDiv.querySelectorAll('.info-icon');
+                    newInfoIcons.forEach(icon => {
+                        icon.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const symptom = icon.getAttribute('data-symptom');
+                            if (symptomDescriptions[symptom]) {
+                                symptomPopup.innerHTML = symptomDescriptions[symptom];
+                                symptomPopup.style.display = 'block';
+                                const rect = icon.getBoundingClientRect();
+                                symptomPopup.style.top = `${rect.top + window.scrollY}px`;
+                                symptomPopup.style.left = `${rect.right + window.scrollX + 10}px`;
+                                setTimeout(() => {
+                                    symptomPopup.style.display = 'none';
+                                }, 3000);
+                            }
+                        });
+                    });
+                } else {
+                    suggestedSymptomsDiv.innerHTML = '<p>No matching symptoms found. Try refining your description.</p>';
+                    suggestedSymptomsDiv.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Symptoms - Disease Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Confirm Your Symptoms</h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="confirm-section">
+            <h2>Selected Symptoms</h2>
+            <ul>
+                {% for symptom in selected_symptoms %}
+                    <li>{{ symptom.replace('_', ' ') }}</li>
+                {% endfor %}
+            </ul>
+
+            {% if suggested_symptoms %}
+            <h2>Suggested Related Symptoms</h2>
+            <p>Click the info icon to see a symptom's description, and check any that apply:</p>
+            <form method="POST" action="/predict">
+                {% for symptom in selected_symptoms %}
+                    <input type="hidden" name="symptoms" value="{{ symptom }}">
+                {% endfor %}
+                <input type="hidden" name="confirmed" value="true">
+                <div class="symptom-categories">
+                    {% for symptom in suggested_symptoms %}
+                        <label class="symptom-label">
+                            <input type="checkbox" name="suggested_symptoms" value="{{ symptom }}">
+                            {{ symptom.replace('_', ' ') }}
+                            <span class="info-icon" data-symptom="{{ symptom }}"><i class="fas fa-info-circle"></i></span>
+                        </label><br>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="submit-button">Confirm and Predict</button>
+                <a href="/dashboard" class="nav-link">Cancel</a>
+            </form>
+            <div id="symptomPopup" class="symptom-popup"></div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const symptomPopup = document.getElementById('symptomPopup');
+            const infoIcons = document.querySelectorAll('.info-icon');
+
+            // Symptom descriptions
+            const symptomDescriptions = {
+                "itching": "A sensation that causes the desire to scratch the skin.",
+                "skin_rash": "Red, inflamed, or irritated patches on the skin.",
+                "nodal_skin_eruptions": "Small, raised bumps or nodules on the skin.",
+                "dischromic_patches": "Areas of skin with abnormal color changes.",
+                "red_spots_over_body": "Small red dots appearing across the body.",
+                "pus_filled_pimples": "Pimples containing pus, often painful.",
+                "blackheads": "Small dark spots on the skin due to clogged pores.",
+                "scurring": "Formation of scabs or crusts on the skin.",
+                "skin_peeling": "Shedding of the outer layer of skin.",
+                "silver_like_dusting": "Shiny, silvery scales on the skin.",
+                "small_dents_in_nails": "Tiny pits or depressions in the fingernails.",
+                "inflammatory_nails": "Red, swollen, or painful areas around the nails.",
+                "blister": "A fluid-filled bubble on the skin.",
+                "red_sore_around_nose": "Painful red area near the nostrils.",
+                "yellow_crust_ooze": "Yellowish discharge forming crusts on the skin.",
+                "continuous_sneezing": "Repeated sneezing without stopping.",
+                "shivering": "Uncontrollable trembling, often due to cold or fever.",
+                "chills": "A feeling of coldness with shivering.",
+                "cough": "A sudden expulsion of air from the lungs.",
+                "breathlessness": "Difficulty breathing or shortness of breath.",
+                "phlegm": "Thick mucus coughed up from the respiratory tract.",
+                "throat_irritation": "Scratchy or sore feeling in the throat.",
+                "redness_of_eyes": "Bloodshot or red appearance of the eyes.",
+                "sinus_pressure": "Pain or pressure around the sinuses.",
+                "runny_nose": "Excessive nasal discharge.",
+                "congestion": "Blocked nasal passages or chest.",
+                "chest_pain": "Discomfort or pain in the chest area.",
+                "blood_in_sputum": "Blood present in coughed-up mucus.",
+                "stomach_pain": "Pain or discomfort in the stomach.",
+                "acidity": "Burning sensation in the chest or stomach from acid reflux.",
+                "ulcers_on_tongue": "Painful sores on the tongue.",
+                "vomiting": "Expelling stomach contents through the mouth.",
+                "nausea": "A feeling of sickness with an urge to vomit.",
+                "loss_of_appetite": "Reduced desire to eat.",
+                "pain_during_bowel_movements": "Discomfort during defecation.",
+                "pain_in_anal_region": "Pain around the anus.",
+                "bloody_stool": "Blood present in the stool.",
+                "irritation_in_anus": "Itching or discomfort around the anus.",
+                "constipation": "Difficulty or infrequent bowel movements.",
+                "abdominal_pain": "Pain in the belly area.",
+                "diarrhoea": "Frequent, loose, or watery stools.",
+                "indigestion": "Discomfort or pain from poor digestion.",
+                "passage_of_gases": "Excessive flatulence or gas.",
+                "stomach_bleeding": "Internal bleeding in the stomach.",
+                "distention_of_abdomen": "Swollen or bloated belly.",
+                "swelling_of_stomach": "Enlargement of the stomach area.",
+                "joint_pain": "Pain in the joints (e.g., knees, elbows).",
+                "muscle_wasting": "Loss of muscle mass or strength.",
+                "muscle_weakness": "Reduced muscle strength.",
+                "muscle_pain": "Aching or soreness in the muscles.",
+                "knee_pain": "Pain specifically in the knee joint.",
+                "hip_joint_pain": "Pain in the hip area.",
+                "stiff_neck": "Difficulty moving the neck due to stiffness.",
+                "swelling_joints": "Swollen or inflamed joints.",
+                "movement_stiffness": "Restricted or painful movement.",
+                "painful_walking": "Discomfort while walking.",
+                "back_pain": "Pain in the back, often lower back.",
+                "neck_pain": "Pain or discomfort in the neck.",
+                "cramps": "Sudden, painful muscle contractions.",
+                "headache": "Pain in the head or upper neck.",
+                "dizziness": "A sensation of spinning or lightheadedness.",
+                "spinning_movements": "Feeling the surroundings are spinning (vertigo).",
+                "loss_of_balance": "Difficulty maintaining stability.",
+                "unsteadiness": "Feeling shaky or unstable.",
+                "weakness_of_one_body_side": "Weakness on one side of the body.",
+                "loss_of_smell": "Inability to smell odors.",
+                "altered_sensorium": "Changes in consciousness or awareness.",
+                "lack_of_concentration": "Difficulty focusing or thinking clearly.",
+                "visual_disturbances": "Abnormalities in vision.",
+                "blurred_and_distorted_vision": "Unclear or warped vision.",
+                "slurred_speech": "Difficulty speaking clearly.",
+                "fatigue": "Extreme tiredness or lack of energy.",
+                "weight_gain": "Unexplained increase in body weight.",
+                "weight_loss": "Unexplained decrease in body weight.",
+                "restlessness": "Inability to relax or stay still.",
+                "lethargy": "A state of sluggishness or apathy.",
+                "high_fever": "Elevated body temperature above normal.",
+                "sweating": "Excessive perspiration.",
+                "dehydration": "Lack of adequate body fluids.",
+                "malaise": "A general feeling of discomfort or illness.",
+                "weakness_in_limbs": "Reduced strength in arms or legs.",
+                "bruising": "Unexplained marks or discoloration on the skin.",
+                "obesity": "Excessive body fat accumulation.",
+                "swollen_legs": "Swelling in the lower limbs.",
+                "swollen_blood_vessels": "Visible, enlarged veins.",
+                "swollen_extremities": "Swelling in hands, feet, or limbs.",
+                "depression": "Persistent sadness or low mood.",
+                "irritability": "Easily annoyed or agitated.",
+                "family_history": "Family members with similar symptoms or diseases.",
+                "history_of_alcohol_consumption": "Past or current heavy alcohol use.",
+                "fast_heart_rate": "Rapid heartbeat or pulse.",
+                "palpitations": "Feeling of irregular or strong heartbeats.",
+                "prominent_veins_on_calf": "Visible veins on the lower leg.",
+                "sunken_eyes": "Eyes appearing deep-set or hollow.",
+                "burning_micturition": "Burning sensation during urination.",
+                "spotting_urination": "Small amounts of blood in urine.",
+                "yellow_urine": "Urine with a strong yellow color.",
+                "bladder_discomfort": "Pain or unease in the bladder area.",
+                "foul_smell_of_urine": "Unpleasant odor in urine.",
+                "continuous_feel_of_urine": "Persistent urge to urinate.",
+                "polyuria": "Excessive urine production.",
+                "yellowish_skin": "Yellow tint to the skin (jaundice).",
+                "dark_urine": "Urine that is dark in color.",
+                "yellowing_of_eyes": "Yellow discoloration of the eyes.",
+                "acute_liver_failure": "Sudden loss of liver function.",
+                "fluid_overload": "Excess fluid buildup in the body.",
+                "anxiety": "Feelings of nervousness or worry.",
+                "cold_hands_and_feets": "Unusually cold hands and feet.",
+                "mood_swings": "Rapid changes in emotional state.",
+                "irregular_sugar_level": "Fluctuating blood sugar levels.",
+                "excessive_hunger": "Unusually strong hunger.",
+                "increased_appetite": "Heightened desire to eat.",
+                "puffy_face_and_eyes": "Swelling around the face and eyes.",
+                "enlarged_thyroid": "Swollen thyroid gland in the neck.",
+                "brittle_nails": "Nails that break easily.",
+                "drying_and_tingling_lips": "Dry, prickling sensation on lips.",
+                "pain_behind_the_eyes": "Pain felt behind the eyeballs.",
+                "watering_from_eyes": "Excessive tearing from the eyes.",
+                "swelled_lymph_nodes": "Enlarged lymph glands.",
+                "receiving_blood_transfusion": "History of blood transfusion.",
+                "receiving_unsterile_injections": "History of unsafe injections.",
+                "extra_marital_contacts": "Sexual activity outside marriage.",
+                "abnormal_menstruation": "Irregular or painful periods.",
+                "toxic_look_(typhos)": "Appearance of severe illness.",
+                "internal_itching": "Itching sensation inside the body.",
+                "mucoid_sputum": "Thick, sticky mucus coughed up.",
+                "rusty_sputum": "Mucus with a rust-like color.",
+                "coma": "State of unconsciousness."
+            };
+
+
+            // Info icon click handler
+            infoIcons.forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const symptom = icon.getAttribute('data-symptom');
+                    if (symptomDescriptions[symptom]) {
+                        symptomPopup.innerHTML = symptomDescriptions[symptom];
+                        symptomPopup.style.display = 'block';
+                        const rect = icon.getBoundingClientRect();
+                        symptomPopup.style.top = `${rect.top + window.scrollY}px`;
+                        symptomPopup.style.left = `${rect.right + window.scrollX + 10}px`;
+                        setTimeout(() => {
+                            symptomPopup.style.display = 'none';
+                        }, 3000);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
