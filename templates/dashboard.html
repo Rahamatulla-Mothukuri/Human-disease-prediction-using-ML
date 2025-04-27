@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,7 +133,7 @@
                         <label class="symptom-label"><input type="checkbox" name="symptoms" value="nodal_skin_eruptions"> Nodal Skin Eruptions <span class="info-icon" data-symptom="nodal_skin_eruptions"><i class="fas fa-info-circle"></i></span><span class="symptom-description" data-symptom="nodal_skin_eruptions">Small, raised bumps on the skin.</span></label><br>
                         <label class="symptom-label"><input type="checkbox" name="symptoms" value="red_spots_over_body"> Red Spots Over Body <span class="info-icon" data-symptom="red_spots_over_body"><i class="fas fa-info-circle"></i></span><span class="symptom-description" data-symptom="red_spots_over_body">Red spots scattered across the body.</span></label><br>
                         <label class="symptom-label"><input type="checkbox" name="symptoms" value="pus_filled_pimples"> Pus-Filled Pimples <span class="info-icon" data-symptom="pus_filled_pimples"><i class="fas fa-info-circle"></i></span><span class="symptom-description" data-symptom="pus_filled_pimples">Pimples containing pus.</span></label><br>
-                        <label class="symptom-label"><input type="checkbox" name="symptoms" value="blackheads"> Blackheads <span class="info-icon" data-symptom="blackheads"><i class="fas fa-info-circle"></i></span><span class="symptom-description" data-symptom="blackheads">Small, dark spots on the skin.</span></label><br>
+                        <label class="symptom-label"><input type="checkbox" name="symptoms" multistate value="blackheads"> Blackheads <span class="info-icon" data-symptom="blackheads"><i class="fas fa-info-circle"></i></span><span class="symptom-description" data-symptom="blackheads">Small, dark spots on the skin.</span></label><br>
                         <label class="symptom-label"><input type="checkbox" name="symptoms" value="scurring"> Scurring <span class="info-icon" data-symptom="scurring"><i class="fas fa-info-circle"></i></span><span class="symptom-description" data-symptom="scurring">Rough, scarred skin texture.</span></label><br>
                         <label class="symptom-label"><input type="checkbox" name="symptoms" value="skin_peeling"> Skin Peeling <span class="info-icon" data-symptom="skin_peeling"><i class="fas fa-info-circle"></i></span><span class="symptom-description" data-symptom="skin_peeling">Flaking or peeling of the skin.</span></label><br>
                         <label class="symptom-label"><input type="checkbox" name="symptoms" value="silver_like_dusting"> Silver-Like Dusting <span class="info-icon" data-symptom="silver_like_dusting"><i class="fas fa-info-circle"></i></span><span class="symptom-description" data-symptom="silver_like_dusting">Silvery scales on the skin.</span></label><br>
@@ -250,19 +249,44 @@
     </main>
 
     <script>
+        // Incompatible symptom pairs
+        const incompatiblePairs = [
+            ['high_fever', 'cold_hands_and_feets'],
+            ['weight_gain', 'weight_loss'],
+            ['fever', 'cold_hands_and_feets'],
+            ['mild_fever', 'cold_hands_and_feets'],
+            ['increased_appetite', 'loss_of_appetite'],
+            ['fever', 'high_fever'],
+            ['fever', 'mild_fever'],
+            ['high_fever', 'mild_fever']
+        ];
+
+        // Selection limits
+        const maxSelections = 17;
+        const minSelections = 2;
+
+        // DOM elements
+        const checkboxes = document.querySelectorAll('input[name="symptoms"]');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Ensure checkboxes exist
+        if (!checkboxes.length) {
+            console.error('No checkboxes found with name="symptoms". Check your HTML.');
+        }
+
         // Toggle symptoms section visibility
-        document.getElementById('symptomButton').addEventListener('click', function() {
+        document.getElementById('symptomButton').addEventListener('click', function () {
             const section = document.getElementById('symptomsSection');
             section.style.display = section.style.display === 'none' ? 'block' : 'none';
         });
 
         // Toggle symptom description on click
         document.querySelectorAll('.info-icon').forEach(icon => {
-            icon.addEventListener('click', function() {
+            icon.addEventListener('click', function () {
                 const symptom = this.getAttribute('data-symptom');
                 const description = document.querySelector(`.symptom-description[data-symptom="${symptom}"]`);
                 const isVisible = description.classList.contains('visible');
-                
+
                 // Hide all descriptions
                 document.querySelectorAll('.symptom-description').forEach(desc => {
                     desc.classList.remove('visible');
@@ -275,106 +299,131 @@
             });
         });
 
-        // Incompatible symptom pairs
-        const incompatiblePairs = [
-            ['high_fever', 'cold_hands_and_feets'],
-            ['weight_gain', 'weight_loss'],
-            ['fever', 'cold_hands_and_feets'],
-            ['mild_fever', 'cold_hands_and_feets'],
-            ['increased_appetite', 'loss_of_appetite']
-        ];
+        // Handle checkbox changes
+        function handleCheckboxChange(event) {
+            const checkbox = event.target;
+            const selectedSymptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(cb => cb.value);
+            const checkedCount = selectedSymptoms.length;
 
-        // Handle symptom selection limits and incompatibilities
-        const checkboxes = document.querySelectorAll('input[name="symptoms"]');
-        const maxSelections = 17;
-        const minSelections = 2;
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const checkedCount = document.querySelectorAll('input[name="symptoms"]:checked').length;
-                const errorMessage = document.getElementById('errorMessage');
-
-                // Enforce maximum selection limit
-                if (checkedCount >= maxSelections) {
-                    checkboxes.forEach(cb => {
-                        if (!cb.checked) {
-                            cb.disabled = true;
-                        }
-                    });
-                } else {
-                    // Re-enable checkboxes unless incompatible
-                    checkboxes.forEach(cb => {
-                        if (!cb.checked) {
-                            cb.disabled = false;
-                        }
-                    });
+            // Check for incompatible selections
+            if (checkbox.checked) {
+                for (const [symptom1, symptom2] of incompatiblePairs) {
+                    if (checkbox.value === symptom1 && selectedSymptoms.includes(symptom2)) {
+                        alert(`Cannot select ${symptom1} with ${symptom2}. Please deselect ${symptom2}.`);
+                        checkbox.checked = false;
+                        console.log(`Blocked ${symptom1} due to ${symptom2} being selected.`);
+                        return;
+                    } else if (checkbox.value === symptom2 && selectedSymptoms.includes(symptom1)) {
+                        alert(`Cannot select ${symptom2} with ${symptom1}. Please deselect ${symptom1}.`);
+                        checkbox.checked = false;
+                        console.log(`Blocked ${symptom2} due to ${symptom1} being selected.`);
+                        return;
+                    }
                 }
+            }
 
-                // Handle incompatible symptoms
-                const selectedSymptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(cb => cb.value);
-                
-                incompatiblePairs.forEach(([symptom1, symptom2]) => {
-                    if (selectedSymptoms.includes(symptom1)) {
-                        const conflictingCheckbox = document.querySelector(`input[value="${symptom2}"]`);
-                        if (conflictingCheckbox && !conflictingCheckbox.checked) {
-                            conflictingCheckbox.disabled = true;
-                        }
-                    } else if (selectedSymptoms.includes(symptom2)) {
-                        const conflictingCheckbox = document.querySelector(`input[value="${symptom1}"]`);
-                        if (conflictingCheckbox && !conflictingCheckbox.checked) {
-                            conflictingCheckbox.disabled = true;
-                        }
-                    } else {
-                        // Re-enable both if neither is selected
-                        const cb1 = document.querySelector(`input[value="${symptom1}"]`);
-                        const cb2 = document.querySelector(`input[value="${symptom2}"]`);
-                        if (cb1 && cb2 && checkedCount < maxSelections) {
-                            cb1.disabled = false;
-                            cb2.disabled = false;
+            // Update selected symptoms after potential deselection
+            const updatedSelectedSymptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(cb => cb.value);
+
+            // Manage checkbox states
+            checkboxes.forEach(cb => {
+                if (!cb.checked) {
+                    let isIncompatible = false;
+                    for (const [symptom1, symptom2] of incompatiblePairs) {
+                        if ((cb.value === symptom1 && updatedSelectedSymptoms.includes(symptom2)) ||
+                            (cb.value === symptom2 && updatedSelectedSymptoms.includes(symptom1))) {
+                            isIncompatible = true;
+                            break;
                         }
                     }
-                });
-
-                // Show alert for incompatible selections
-                if (this.checked) {
-                    incompatiblePairs.forEach(([symptom1, symptom2]) => {
-                        if (this.value === symptom1 && selectedSymptoms.includes(symptom2)) {
-                            alert(`Cannot select ${symptom1} with ${symptom2}. Please deselect ${symptom2}.`);
-                            this.checked = false;
-                        } else if (this.value === symptom2 && selectedSymptoms.includes(symptom1)) {
-                            alert(`Cannot select ${symptom2} with ${symptom1}. Please deselect ${symptom1}.`);
-                            this.checked = false;
-                        }
-                    });
+                    cb.disabled = (checkedCount >= maxSelections) || isIncompatible;
+                } else {
+                    cb.disabled = false; // Ensure checked checkboxes are not disabled
                 }
-
-                // Clear error message if within limits
-                errorMessage.classList.remove('visible');
-                errorMessage.textContent = '';
             });
-        });
 
-        // Prevent form submission if selection limits are not met
-        document.getElementById('symptomForm').addEventListener('submit', function(event) {
-            const checkedCount = document.querySelectorAll('input[name="symptoms"]:checked').length;
-            const errorMessage = document.getElementById('errorMessage');
+            // Update error message
+            updateErrorMessage(checkedCount);
+        }
 
+        // Update error message based on selection count
+        function updateErrorMessage(checkedCount) {
             if (checkedCount < minSelections) {
-                event.preventDefault();
                 errorMessage.textContent = `Please select at least ${minSelections} symptoms.`;
                 errorMessage.classList.add('visible');
             } else if (checkedCount > maxSelections) {
-                event.preventDefault();
                 errorMessage.textContent = `Please select no more than ${maxSelections} symptoms.`;
                 errorMessage.classList.add('visible');
+            } else {
+                errorMessage.textContent = '';
+                errorMessage.classList.remove('visible');
+            }
+        }
+
+        // Initialize checkbox states
+        function initializeCheckboxes() {
+            const selectedSymptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(cb => cb.value);
+            const checkedCount = selectedSymptoms.length;
+
+            // Validate initial selections for incompatibilities
+            for (const [symptom1, symptom2] of incompatiblePairs) {
+                if (selectedSymptoms.includes(symptom1) && selectedSymptoms.includes(symptom2)) {
+                    console.warn(`Incompatible symptoms ${symptom1} and ${symptom2} both selected on load.`);
+                    // Optionally uncheck one of the symptoms
+                    const checkbox = document.querySelector(`input[value="${symptom2}"]`);
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+                }
+            }
+
+            // Update selected symptoms after validation
+            const updatedSelectedSymptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(cb => cb.value);
+
+            // Set checkbox states
+            checkboxes.forEach(cb => {
+                if (!cb.checked) {
+                    let isIncompatible = false;
+                    for (const [symptom1, symptom2] of incompatiblePairs) {
+                        if ((cb.value === symptom1 && updatedSelectedSymptoms.includes(symptom2)) ||
+                            (cb.value === symptom2 && updatedSelectedSymptoms.includes(symptom1))) {
+                            isIncompatible = true;
+                            break;
+                        }
+                    }
+                    cb.disabled = (checkedCount >= maxSelections) || isIncompatible;
+                }
+            });
+
+            // Update error message
+            updateErrorMessage(checkedCount);
+        }
+
+        // Attach event listeners
+        checkboxes.forEach(checkbox => {
+            checkbox.removeEventListener('change', handleCheckboxChange); // Prevent duplicates
+            checkbox.addEventListener('change', handleCheckboxChange);
+        });
+
+        // Run initialization
+        document.addEventListener('DOMContentLoaded', initializeCheckboxes);
+
+        // Prevent form submission if selection limits are not met
+        document.getElementById('symptomForm').addEventListener('submit', function (event) {
+            const checkedCount = document.querySelectorAll('input[name="symptoms"]:checked').length;
+            if (checkedCount < minSelections || checkedCount > maxSelections) {
+                event.preventDefault();
+                updateErrorMessage(checkedCount);
             }
         });
 
         // Suggest symptoms based on description
         function suggestSymptoms() {
             const description = document.getElementById('symptomDescription').value.trim();
+            const suggestedDiv = document.getElementById('suggestedSymptoms');
+
             if (!description) {
-                document.getElementById('suggestedSymptoms').textContent = 'Please enter a description.';
+                suggestedDiv.textContent = 'Please enter a description.';
                 return;
             }
 
@@ -385,16 +434,27 @@
             })
             .then(response => response.json())
             .then(symptoms => {
-                const suggestedDiv = document.getElementById('suggestedSymptoms');
                 if (symptoms.length === 0) {
                     suggestedDiv.textContent = 'No symptoms suggested. Please refine your description.';
                     return;
                 }
 
                 suggestedDiv.textContent = `Suggested symptoms: ${symptoms.join(', ')}`;
+                const selectedSymptoms = Array.from(document.querySelectorAll('input[name="symptoms"]:checked')).map(cb => cb.value);
+
                 symptoms.forEach(symptom => {
+                    let isCompatible = true;
+                    for (const [symptom1, symptom2] of incompatiblePairs) {
+                        if ((symptom === symptom1 && selectedSymptoms.includes(symptom2)) ||
+                            (symptom === symptom2 && selectedSymptoms.includes(symptom1))) {
+                            isCompatible = false;
+                            console.log(`Suggested symptom ${symptom} is incompatible with ${selectedSymptoms.includes(symptom1) ? symptom1 : symptom2}`);
+                            break;
+                        }
+                    }
+
                     const checkbox = document.querySelector(`input[value="${symptom}"]`);
-                    if (checkbox && !checkbox.checked && !checkbox.disabled) {
+                    if (checkbox && !checkbox.checked && !checkbox.disabled && isCompatible) {
                         const checkedCount = document.querySelectorAll('input[name="symptoms"]:checked').length;
                         if (checkedCount < maxSelections) {
                             checkbox.checked = true;
@@ -404,7 +464,7 @@
                 });
             })
             .catch(error => {
-                document.getElementById('suggestedSymptoms').textContent = 'Error suggesting symptoms.';
+                suggestedDiv.textContent = 'Error suggesting symptoms.';
                 console.error('Error:', error);
             });
         }
