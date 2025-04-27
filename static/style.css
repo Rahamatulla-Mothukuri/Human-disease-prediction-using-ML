@@ -1,104 +1,193 @@
-/* === Existing Styles === */
-
+/* === Global Styles === */
 body {
     font-family: Arial, sans-serif;
     background: #f0f8ff;
     margin: 0;
     padding: 0;
     text-align: center;
-    padding-top: 50px;
+    min-height: 100vh;
 }
 
 header {
     background-color: #2c3e50;
     color: white;
     padding: 10px 20px;
+}
+
+footer {
+    background-color: #2c3e50;
+    color: white;
     text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* === Typography === */
+h1, h2, h3, h4 {
+    color: #2c3e50;
+    margin: 10px 0;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+/* === Layout === */
+main {
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    height: 90vh;
+    width: 90vw;
+    max-width: 1200px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: white;
 }
 
 .header-container {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.logo {
-    width: 50px;
-    height: 50px;
-    margin-right: 15px;
-}
-
-h1, h2, h3, h4 {
-    color: #2c3e50;
-    margin: 10px 0;
-}
-
-main {
     padding: 20px;
+}
+
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
 }
 
 .welcome-section {
     margin-bottom: 20px;
 }
 
-.banner {
+.result-section,
+.confirm-section,
+.symptoms-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* === Components === */
+.logo {
+    width: 60px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.banner,
+.hero-image {
     width: 100%;
     max-width: 600px;
     height: auto;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.actions {
-    margin: 20px 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
 }
 
 .nav-link {
-    color: #2980b9;
+    color: #007bff;
     text-decoration: none;
-    margin: 0 10px;
+    margin: 20px 10px;
     font-weight: bold;
-}
-
-.nav-link i {
-    margin-right: 5px;
 }
 
 .nav-link:hover {
     text-decoration: underline;
 }
 
-.button-container {
-    margin: 20px 0;
+.nav-link i {
+    margin-right: 5px;
 }
 
+.button,
 .action-button {
     background-color: #3498db;
     color: white;
-    border: none;
     padding: 12px 20px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    text-decoration: none;
     transition: background-color 0.3s;
 }
 
+.button:hover,
 .action-button:hover {
     background-color: #2980b9;
 }
 
+.submit-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+}
+
+.button-container,
+.actions {
+    margin: 20px 0;
+}
+
+/* === Forms and Inputs === */
+label {
+    display: block;
+    margin: 5px 0;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+.text-symptom-input {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* === Symptom Selection === */
 .symptoms-container {
     display: none;
     background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 1000px;
-    margin: 20px auto;
-    text-align: left;
     max-height: 500px;
     overflow-y: auto;
-    position: relative; /* For popup positioning */
+    text-align: left;
+    position: relative;
 }
 
 .symptom-categories {
@@ -113,34 +202,38 @@ main {
 }
 
 .category h4 {
-    color: #2c3e50;
     border-bottom: 2px solid #3498db;
     padding-bottom: 5px;
 }
 
-label {
-    display: block;
-    margin: 5px 0;
-    position: relative;
+.symptom-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
 }
 
-input[type="checkbox"] {
-    margin-right: 5px;
+.info-icon {
+    color: #007bff;
+    font-size: 14px;
 }
 
-.text-symptom-input {
-    margin-top: 20px;
-    text-align: center;
+.info-icon:hover {
+    color: #0056b3;
 }
 
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 5px;
+.symptom-popup {
+    position: absolute;
+    background-color: #fff;
     border: 1px solid #ccc;
-    resize: vertical;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    max-width: 300px;
+    display: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
 }
 
 .suggested-symptoms {
@@ -154,33 +247,122 @@ textarea {
     display: none;
 }
 
-.suggested-symptoms label {
-    display: block;
-    margin: 5px 0;
+/* === Login Section === */
+.left-image-section {
+    flex: 1;
+    background: url("images/medical-illustration.jpg") no-repeat center center;
+    background-size: cover;
 }
 
-.submit-button {
+.login-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f0f8ff;
+}
+
+.login-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 10px;
     background-color: #3498db;
-    color: white;
     border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
+    color: white;
+    font-size: 1rem;
+    border-radius: 8px;
     cursor: pointer;
-    margin-top: 20px;
 }
 
-.submit-button:hover {
+.login-box button:hover {
     background-color: #2980b9;
 }
 
-footer {
-    background-color: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
+.login-box p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.login-box p a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+/* === Prediction Table === */
+.prediction-table {
     width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.prediction-table th,
+.prediction-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.prediction-table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.highlight {
+    background-color: #ffeb3b;
+    font-weight: bold;
+}
+
+/* === Disease Info and Warnings === */
+.disease-info {
+    margin-top: 20px;
+}
+
+.disease-info p,
+.disease-info ul {
+    margin-bottom: 20px;
+}
+
+.disease-info ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.warning-box {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    color: #856404;
+}
+
+.warning-box h3 {
+    margin-top: 0;
+    color: #856404;
+}
+
+.disclaimer {
+    font-style: italic;
+    color: #666;
+    margin-top: 20px;
 }
 
 .error {
@@ -196,326 +378,10 @@ li {
     margin: 10px 0;
 }
 
-/* New Popup Styling */
-.symptom-popup {
-    display: none;
-    position: absolute;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    max-width: 300px;
-    z-index: 1000;
-    font-size: 14px;
-    color: #333;
-}
-
-/* === Appended Confirm Section Styles === */
-
-.confirm-section {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.confirm-section h2 {
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.confirm-section ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    margin-bottom: 20px;
-}
-
-.confirm-section label {
-    display: block;
-    margin: 5px 0;
-}
-
-/* Green button for final confirmation */
-.confirm-section .submit-button {
-    background-color: #28a745;
-}
-
-.confirm-section .submit-button:hover {
-    background-color: #218838;
-}
-.result-section {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.prediction-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.prediction-table th, .prediction-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-.prediction-table th {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.highlight {
-    background-color: #ffeb3b; /* Yellow highlight for majority vote */
-    font-weight: bold;
-}
-
-.disease-info {
-    margin-top: 20px;
-}
-
-.disease-info h3 {
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.disease-info p, .disease-info ul {
-    margin-bottom: 20px;
-}
-
-.disease-info ul {
-    list-style-type: disc;
-    margin-left: 20px;
-}
-
-.nav-link {
-    display: inline-block;
-    margin-top: 20px;
-    color: #007BFF;
-    text-decoration: none;
-}
-
-.nav-link:hover {
-    text-decoration: underline;
-}
-.warning-box {
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    padding: 15px;
-    margin: 20px 0;
-    border-radius: 5px;
-    color: #856404;
-}
-
-.warning-box h3 {
-    margin-top: 0;
-    color: #856404;
-}
-
-.disclaimer {
-    font-style: italic;
-    color: #666;
-    margin-top: 20px;
-}
-.warning-box {
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-    padding: 15px;
-    margin: 20px 0;
-    border-radius: 5px;
-    color: #856404;
-}
-
-.warning-box h3 {
-    margin-top: 0;
-    color: #856404;
-}
-
-.symptom-comparison {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-    gap: 20px;
-}
-
-.symptom-list {
-    flex: 1;
-}
-
-.symptom-list h4 {
-    margin-bottom: 10px;
-    color: #856404;
-    font-size: 1.1em;
-}
-
-.symptom-list ul {
-    list-style-type: disc;
-    margin-left: 20px;
-    padding-left: 0;
-}
-
-.symptom-list li {
-    margin-bottom: 5px;
-}
-
-.disclaimer {
-    font-style: italic;
-    color: #666;
-    margin-top: 20px;
-}
-.symptom-label {
-    position: relative;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.info-icon {
-    color: #007bff;
-    font-size: 14px;
-}
-
-.info-icon:hover {
-    color: #0056b3;
-}
-
-.symptom-popup {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    max-width: 300px;
-    display: none;
-    border-radius: 5px;
-}
-
-.confirm-section {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.submit-button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.submit-button:hover {
-    background-color: #218838;
-}
-
-.nav-link {
-    color: #007bff;
-    text-decoration: none;
-    margin-left: 20px;
-}
-
-.nav-link:hover {
-    text-decoration: underline;
-}
-.symptom-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-}
-
-.info-icon {
-    color: #007bff;
-    font-size: 14px;
-}
-
-.info-icon:hover {
-    color: #0056b3;
-}
-
-.symptom-popup {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    max-width: 300px;
-    display: none;
-    border-radius: 5px;
-}
-
-.symptoms-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.submit-button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-.submit-button:hover {
-    background-color: #218838;
-}
-.symptom-popup {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    max-width: 300px;
-    display: none;
-    border-radius: 5px;
-}
-.symptom-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-}
-
-.info-icon {
-    color: #007bff;
-    font-size: 14px;
-}
-
-.info-icon:hover {
-    color: #0056b3;
-}
-
-.symptom-popup {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    max-width: 300px;
-    display: none;
-    border-radius: 5px;
+.sub-text {
+    color: #555;
+    font-size: 18px;
+    max-width: 700px;
+    margin: 20px auto 40px;
+    text-align: center;
 }
